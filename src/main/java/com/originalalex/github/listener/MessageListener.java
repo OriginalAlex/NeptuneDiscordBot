@@ -1,5 +1,6 @@
 package com.originalalex.github.listener;
 
+import com.originalalex.github.counting.Counting;
 import com.originalalex.github.functionalities.*;
 import com.originalalex.github.ranking.ModifyReputation;
 import com.originalalex.github.ranking.SimpleDisplay;
@@ -42,6 +43,9 @@ public class MessageListener extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(MessageReceivedEvent e) {
+		if (e.getChannel().getName().equals("counting")) {
+			Counting.count(e);
+		}
 		String[] parts = e.getMessage().getContentStripped().split(" ");
 		if (parts[0].equalsIgnoreCase("neptune.talk") || parts[0].equalsIgnoreCase("neptune.cleverbot")
 				|| parts[0].equalsIgnoreCase("neptune.chat")) {
