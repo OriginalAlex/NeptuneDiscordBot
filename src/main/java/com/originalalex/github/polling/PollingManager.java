@@ -36,16 +36,13 @@ public class PollingManager {
         String config = FileHelper.getFileAsString(Charset.defaultCharset());
         JsonParser parser = new JsonParser();
         JsonObject root = parser.parse(config).getAsJsonObject();
-        this.maxPollDuration = root.get("max_poll_duration_in_minutes").getAsInt();
+        this.maxPollDuration = 3600;
         this.usersWhoCanDeletePolls = new ArrayList<>();
 
-        JsonArray users = root.getAsJsonArray("can_delete_polls");
-        for (JsonElement e : users) {
-            usersWhoCanDeletePolls.add(e.getAsString());
-        }
+
     }
 
-    private void handle(MessageReceivedEvent e, String[] parts, double duration) {
+    public void handle(MessageReceivedEvent e, String[] parts, double duration) {
         String message = e.getMessage().getContentStripped();
         List<String> arguments = parser.parse(message);
         if (arguments.size() <= 2 || arguments.size() >= 6) { // invalid message
@@ -79,7 +76,6 @@ public class PollingManager {
     }
 
     public void vote(MessageReceivedEvent e) { // will be of format: neptune.vote [ID] [NUMBER]
-        System.out.println("vote");
         String message = e.getMessage().getContentStripped();
         String[] parts = message.split(" ");
         String id = parts[1];

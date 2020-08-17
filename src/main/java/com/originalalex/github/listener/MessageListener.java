@@ -2,6 +2,7 @@ package com.originalalex.github.listener;
 
 import com.originalalex.github.counting.Counting;
 import com.originalalex.github.functionalities.*;
+import com.originalalex.github.polling.PollingManager;
 import com.originalalex.github.ranking.ModifyReputation;
 import com.originalalex.github.ranking.SimpleDisplay;
 import com.originalalex.github.ranking.WipeDatabase;
@@ -30,6 +31,7 @@ public class MessageListener extends ListenerAdapter {
 						// using the Cleverbot API]
 	private EightBall eightBall;
 	private RandomUser randomUser;
+	private PollingManager pollingManager;
 
 	public MessageListener(JDA jda) {
 		this.helpFunction = new Help();
@@ -44,6 +46,7 @@ public class MessageListener extends ListenerAdapter {
 		this.talk = new Talk();
 		this.eightBall = new EightBall();
 		this.randomUser = new RandomUser(jda);
+		this.pollingManager = new PollingManager();
 	}
 
 	@Override
@@ -61,6 +64,12 @@ public class MessageListener extends ListenerAdapter {
 		}
 		if (parts[0].equals("neptune.8ball")) {
 			eightBall.handle(e,parts);
+		}
+		if (parts[0].equals("neptune.poll")) {
+			pollingManager.handleAllCases(e,parts);
+		}
+		if (parts[0].equals("neptune.vote")) {
+			pollingManager.vote(e);
 		}
 		if (parts.length == 3) {
 			switch (parts[0].toLowerCase()) {
