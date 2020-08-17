@@ -27,6 +27,7 @@ public class MessageListener extends ListenerAdapter {
 	private WipeDatabase wipeDatabase; // Clear the reputation database
 	private Talk talk; // A smart bot that can hold a conversation [implemented
 						// using the Cleverbot API]
+	private EightBall eightBall;
 
 	public MessageListener(JDA jda) {
 		this.helpFunction = new Help();
@@ -39,6 +40,7 @@ public class MessageListener extends ListenerAdapter {
 		this.simpleDisplay = new SimpleDisplay(modifyReputation.getLevel());
 		this.wipeDatabase = new WipeDatabase(modifyReputation.getWipeDatabaseUsers());
 		this.talk = new Talk();
+		this.eightBall = new EightBall();
 	}
 
 	@Override
@@ -53,6 +55,9 @@ public class MessageListener extends ListenerAdapter {
 		}
 		if (parts[0].equals("neptune.wiki")) {
 			wikiFunction.handle(e,parts);
+		}
+		if (parts[0].equals("neptune.8ball")) {
+			eightBall.handle(e,parts);
 		}
 		if (parts.length == 3) {
 			switch (parts[0].toLowerCase()) {
