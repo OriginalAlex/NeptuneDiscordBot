@@ -6,6 +6,7 @@ import com.originalalex.github.ranking.ModifyReputation;
 import com.originalalex.github.ranking.SimpleDisplay;
 import com.originalalex.github.ranking.WipeDatabase;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -28,6 +29,7 @@ public class MessageListener extends ListenerAdapter {
 	private Talk talk; // A smart bot that can hold a conversation [implemented
 						// using the Cleverbot API]
 	private EightBall eightBall;
+	private RandomUser randomUser;
 
 	public MessageListener(JDA jda) {
 		this.helpFunction = new Help();
@@ -41,6 +43,7 @@ public class MessageListener extends ListenerAdapter {
 		this.wipeDatabase = new WipeDatabase(modifyReputation.getWipeDatabaseUsers());
 		this.talk = new Talk();
 		this.eightBall = new EightBall();
+		this.randomUser = new RandomUser(jda);
 	}
 
 	@Override
@@ -107,6 +110,13 @@ public class MessageListener extends ListenerAdapter {
 				bp.handle(e,parts);
 			}
 
+		}
+	}
+
+	@Override
+	public void onMessageDelete(MessageDeleteEvent e) {
+		if (e.getChannel().getName().equals("counting")) {
+			Counting.messageDeleted(e);
 		}
 	}
 
