@@ -39,17 +39,21 @@ public class Scrape {
                 return null;
             }
             Elements paragraphElements = doc.select("p");
-            if (paragraphElements.size() == 1) { // The article doesn't exist, but it suggests other articles which are similar to a certain topic.
-                String referTo = paragraphElements.get(0).text();
-                Element list = doc.select("ul").first(); // get the unordered list of the suggested
-                Elements items = list.select("li"); // individual items.
-                paragraphs.add(null); // This will signify that it is a list and not a paragraph!
-                for (Element e : items) {
-                    paragraphs.add(e.text());
-                }
-            }
             for (int i = 0; i < number && i < paragraphElements.size(); i++) { // the first paragraph is not legit
                 Element el = paragraphElements.get(i);
+                if (el.text().isBlank()) {
+                    number++;
+                    continue;
+                }
+                if (el.text().contains("may refer to:")) {
+                    Element list = doc.select("ul").first(); // get the unordered list of the suggested
+                    Elements items = list.select("li"); // individual items.
+                    paragraphs.add(null); // This will signify that it is a list and not a paragraph!
+                    for (Element e : items) {
+                        paragraphs.add(e.text());
+                    }
+                    return paragraphs;
+                }
                 if (el.parent().parent().tagName().equalsIgnoreCase("tr")) {
                     number++; // do it for one more iteration [IN THIS CASE IT IS ACTUALLY GRABBING THE SIDEBAR AND NOT THE PARAGRAPHS FILLED WITH INFORMATION
                 } else {

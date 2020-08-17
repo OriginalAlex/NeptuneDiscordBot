@@ -18,10 +18,15 @@ public class Wiki implements Function {
 
     @Override
     public void handle(MessageReceivedEvent e, String[] parts) {
+        query="";
         for (int i = 1; i <parts.length; i++) {
             this.query+=parts[i] + " ";
         }
-        this.query = this.query.strip();
+        query = query.strip();
+        query = query.replaceAll(" ","_");
+        char first = query.charAt(0);
+        char capital = Character.toUpperCase(first);
+        query = capital + query.substring(1);
         String firstParagraph = scrape.getFirstWikiParagraph(query);
         MessageEmbed embed;
         if (firstParagraph == null) {

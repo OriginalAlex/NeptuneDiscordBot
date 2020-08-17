@@ -47,6 +47,9 @@ public class MessageListener extends ListenerAdapter {
 				|| parts[0].equalsIgnoreCase("neptune.chat")) {
 			talk.handle(e,parts);
 		}
+		if (parts[0].equals("neptune.wiki")) {
+			wikiFunction.handle(e,parts);
+		}
 		if (parts.length == 3) {
 			switch (parts[0].toLowerCase()) {
 			case "neptune.rep":
@@ -68,9 +71,6 @@ public class MessageListener extends ListenerAdapter {
 			switch (parts[0].toLowerCase()) {
 			case "neptune.rep":
 				simpleDisplay.handle(e,parts);
-				break;
-			case "neptune.wiki":
-				wikiFunction.handle(e,parts);
 				break;
 			case "neptune.crypto":
 				crypto.setTicker(parts[1]);
